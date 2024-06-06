@@ -6,6 +6,7 @@ import negocio.AlumnoNegocio;
 import negocio.IAlumnoNegocio;
 import negocio.NegocioException;
 import persistencia.AlumnoDAO;
+import persistencia.AlumnoMemoriaDAO;
 import persistencia.ConexionBD;
 import persistencia.IAlumnoDAO;
 import persistencia.IConexionBD;
@@ -23,14 +24,16 @@ public class Mavenproject2 {
         
         IConexionBD conexionBD = new ConexionBD();
         IAlumnoDAO alumnodao = new AlumnoDAO(conexionBD);
-        
-        AlumnoEntidad ao = new AlumnoEntidad(1, "test", "test", "test", true, false);
-        // ao = alumnodao.getAlumnoByID(1);
-        
         IAlumnoNegocio alumnoNegocio = new AlumnoNegocio(alumnodao);
-                
         frmCRUD fc = new frmCRUD(alumnoNegocio);
         fc.setVisible(true);
+        
+        //IAlumnoDAO alumnoMemoriaDAO = new AlumnoMemoriaDAO();
+        //IAlumnoNegocio alumnoNegocioMemoria = new AlumnoNegocio(alumnoMemoriaDAO);
+        //frmCRUD fcd = new frmCRUD(alumnoNegocioMemoria);
+        //fcd.setVisible(true);
+        
+        
         
     }
 }

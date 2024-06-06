@@ -10,6 +10,7 @@ dtos\AlumnoTablaDTO.class
 presentacion\frmCRUD$2.class
 presentacion\dlgEditar$1.class
 negocio\NegocioException.class
+persistencia\AlumnoMemoriaDAO.class
 persistencia\IAlumnoDAO.class
 negocio\IAlumnoNegocio.class
 utilerias\JButtonCellEditor.class

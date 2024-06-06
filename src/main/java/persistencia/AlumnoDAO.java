@@ -13,9 +13,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -63,8 +60,10 @@ public class AlumnoDAO implements IAlumnoDAO {
 
     @Override
     public void insertarAlumno(AlumnoEntidad alumno) throws PersistenciaException {
+        Connection conexion = null;
         try {
-            Connection conexion = this.conexionBD.crearConexion();
+            conexion = this.conexionBD.crearConexion();
+            conexion.setAutoCommit(false);
             String codigoSQL = "INSERT INTO alumnos(nombres, apellidoPaterno, apellidoMaterno) VALUES (?,?,?)";
             
             PreparedStatement preparedStatement = conexion.prepareStatement(codigoSQL);
@@ -72,10 +71,25 @@ public class AlumnoDAO implements IAlumnoDAO {
             preparedStatement.setString(2, alumno.getApellidoPaterno());
             preparedStatement.setString(3, alumno.getApellidoMaterno());
             preparedStatement.executeUpdate();
-            conexion.close();
+            conexion.commit();
         } catch (SQLException ex) {
+            if (conexion != null){
+                try {
+                    conexion.rollback();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
             System.out.println(ex.getMessage());
-            throw new PersistenciaException("Ocurrio un error");
+            throw new PersistenciaException("Ocurrio un error en el rollback");
+        } finally {
+            if (conexion != null){
+                try {
+                    conexion.close();
+                } catch (SQLException e){
+                    System.out.println(e.getMessage());
+                }
+            }
         }
     } // fin metodo
 
